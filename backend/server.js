@@ -88,6 +88,18 @@ const connectDB = async () => {
     console.log('Connecting to MongoDB...');
     await mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 5000 });
     console.log('MongoDB Connected.');
+
+    // Auto-seed admin user after successful connection
+    const User = require('./models/User');
+    const bcrypt = require('bcryptjs');
+    const adminExists = await User.findOne({ role: 'admin' });
+    if (!adminExists) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('eeswar@2711', salt);
+      await User.create({ username: 'eeswar', password: hashedPassword, role: 'admin' });
+      console.log('Admin auto-seeded: eeswar / eeswar@2711');
+    }
+
   } catch (err) {
     console.warn('Primary MongoDB unavailable. Falling back to in-memory DB...');
     try {
@@ -96,8 +108,8 @@ const connectDB = async () => {
       await mongoose.connect(mongoServer.getUri());
       console.log('In-Memory MongoDB Connected.');
 
-      // Auto-seed admin user
-      const User  = require('./models/User');
+      // Auto-seed admin user for fallback memory DB
+      const User = require('./models/User');
       const bcrypt = require('bcryptjs');
       const adminExists = await User.findOne({ role: 'admin' });
       if (!adminExists) {
