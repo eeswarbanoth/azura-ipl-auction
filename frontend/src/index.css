@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-primary text-gray-100 font-sans antialiased overflow-x-hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-white;
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .neon-text-blue {
+    text-shadow: 0 0 10px theme('colors.neonBlue'), 0 0 20px theme('colors.neonBlue'), 0 0 30px theme('colors.neonBlue');
+  }
+
+  .neon-text-red {
+    text-shadow: 0 0 10px theme('colors.neonRed'), 0 0 20px theme('colors.neonRed'), 0 0 30px theme('colors.neonRed');
+  }
+
+  .neon-text-gold {
+    text-shadow: 0 0 10px theme('colors.gold'), 0 0 20px theme('colors.gold'), 0 0 30px theme('colors.gold');
+  }
+}
